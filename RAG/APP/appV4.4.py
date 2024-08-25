@@ -233,8 +233,73 @@ st.markdown(
     unsafe_allow_html=True
 )
 
+def delete_file_callback():
+    if 'temp_file_path' in st.session_state and st.session_state.temp_file_path is not None:
+        st.session_state.disable_input = True
+
+        temp_file_path = st.session_state.temp_file_path
+        file_name = os.path.basename(temp_file_path)  # Capture the file name
+
+        if os.path.exists(temp_file_path):
+            os.remove(temp_file_path)
+        st.session_state.temp_file_path = None
+        st.session_state.retriever = None
+
+        # Set a flag in session state to show the delete notification
+        st.session_state.file_deleted = True
+        st.session_state.deleted_file_name = file_name
+
+        st.session_state.disable_input = False
+
 # File upload
-uploaded_file = st.file_uploader(label=":blue[Upload a PDF file]", type=["pdf"])
+uploaded_file = st.file_uploader(label=":blue[Upload a PDF file]", type=["pdf"], on_change=delete_file_callback)
+
+# Display the appropriate notification
+if 'file_deleted' in st.session_state and st.session_state.file_deleted:
+    st.markdown(
+        f"""
+        <div style="display: flex; align-items: center; color: #28a745; margin-bottom: 0.35rem;">
+            <i class='fas fa-check-circle' style="font-size: 1.5rem; margin-right: 0.5rem;"></i>
+            <span>File '{st.session_state.deleted_file_name}' deleted successfully!</span>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
+    # Reset the flag after displaying the notification
+    st.session_state.file_deleted = False
+    st.session_state.deleted_file_name = None
+
+elif uploaded_file:
+    with st.spinner("Processing the uploaded PDF..."):
+        st.session_state.disable_input = True
+
+        # Save the uploaded file to a temporary location
+        temp_file_path = os.path.join("", uploaded_file.name)
+        with open(temp_file_path, "wb") as f:
+            f.write(uploaded_file.getbuffer())
+
+        # Store the temporary file path in session state
+        st.session_state.temp_file_path = temp_file_path
+
+        # Clear previous vector store
+        st.session_state.retriever = None
+
+        # Load new vector store
+        st.session_state.retriever = load_vector_store(temp_file_path)
+
+        # Show success notification for file upload
+        st.markdown(
+            f"""
+            <div style="display: flex; align-items: center; color: #28a745; margin-bottom: 0.35rem;">
+                <i class='fas fa-check-circle' style="font-size: 1.5rem; margin-right: 0.5rem;"></i>
+                <span>File '{uploaded_file.name}' uploaded successfully!</span>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+
+        st.session_state.disable_input = False
 
 # Session state to store chat history and retriever
 if 'history' not in st.session_state:
@@ -243,30 +308,9 @@ if 'history' not in st.session_state:
 if 'retriever' not in st.session_state:
     st.session_state.retriever = None
 
-# Process the uploaded file
-if uploaded_file:
-    with st.spinner("Processing the uploaded PDF..."):
-        # Save the uploaded file to a temporary location
-        temp_file_path = os.path.join("", uploaded_file.name)
-        with open(temp_file_path, "wb") as f:
-            f.write(uploaded_file.getbuffer())
-
-        # Clear previous vector store
-        st.session_state.retriever = None
-
-        # Load new vector store
-        st.session_state.retriever = load_vector_store(temp_file_path)
-
-        # Show success notification
-        st.markdown(
-            f"""
-            <div style="display: flex; align-items: center; color: #28a745; margin-bottom: 1.5rem;">
-                <i class='fas fa-check-circle' style="font-size: 1.5rem; margin-right: 0.5rem;"></i>
-                <span>File '{uploaded_file.name}' uploaded successfully!</span>
-            </div>
-            """,
-            unsafe_allow_html=True
-        )
+# Initialize the disable_input session state variable
+if 'disable_input' not in st.session_state:
+    st.session_state.disable_input = False
 
 # User input with customized placeholder
 st.markdown(
@@ -282,13 +326,23 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-user_input = st.text_input(
-    label=":blue[Let me solve your queries!]",
-    type="default",
-    placeholder="Enter your prompt here...",
-    autocomplete=None,
-    key="user_input"
-)
+if st.session_state.disable_input:
+    st.text_input(
+        label=":blue[Let me solve your queries!]",
+        type="default",
+        placeholder="Enter your prompt here...",
+        autocomplete=None,
+        key="user_input_disabled",
+        disabled=True
+    )
+else:
+    user_input = st.text_input(
+        label=":blue[Let me solve your queries!]",
+        type="default",
+        placeholder="Enter your prompt here...",
+        autocomplete=None,
+        key="user_input"
+    )
 
 if user_input:
     if st.session_state.retriever:
