@@ -9,6 +9,8 @@ from langchain.embeddings import OpenAIEmbeddings
 from langchain.vectorstores import FAISS
 from langchain.schema import HumanMessage
 
+# ------ MODEL CODE ------ 
+
 # Load API key from environment variable
 load_dotenv()
 API_KEY = os.getenv('OPENAI_API_KEY')
@@ -232,6 +234,66 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
+
+# Initialize the theme session state variable
+if 'theme' not in st.session_state:
+    st.session_state.theme = "light"
+
+# Function to toggle the theme
+def toggle_theme():
+    if st.session_state.theme == "light":
+        st.session_state.theme = "dark"
+    else:
+        st.session_state.theme = "light"
+
+# Add a button to toggle the theme
+theme_button = st.button("Toggle Theme")
+
+if theme_button:
+    toggle_theme()
+
+# Update the CSS to reflect the new theme
+if st.session_state.theme == "light":
+    st.markdown(
+        """
+        <style>
+        .main {
+            background-color: #333 !important;
+        }
+        .stTextInput > input {
+            color: black !important;
+        }
+        .stMarkdown p {
+            color: black !important;
+        }
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
+else:
+    st.markdown(
+        """
+        <style>
+        .main {
+            background-color: #e9ecef !important;
+        }
+        .stTextInput > input {
+            color: white !important;
+        }
+        .stMarkdown p {
+            color: white !important;
+        }
+        [data-testid="stNotification"] {
+            background-color: #e66457;
+            color: #fff;
+        }
+        h6 {
+            color: #333;
+        }
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
 
 def delete_file_callback():
     if 'temp_file_path' in st.session_state and st.session_state.temp_file_path is not None:
