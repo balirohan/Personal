@@ -116,6 +116,7 @@ st.markdown(
         font-size: 1rem !important;
         cursor: pointer !important;
         font-family: 'Roboto', sans-serif !important;
+        transition: all 0.2s ease;    
     }
 
     button:hover {
