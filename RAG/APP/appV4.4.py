@@ -194,6 +194,14 @@ st.markdown(
         display: flex !important;
         flex-direction: column-reverse !important;
     }
+
+    .st-emotion-cache-15hul6a.ef3psqc13:nth-child(1) {
+        /* Add your custom styles here */
+        padding: 14px 12px 6px 12px !important;
+        position: absolute;
+        top: -255px !important;
+        right: -100px !important;
+    }
     </style>
     """,
     unsafe_allow_html=True
@@ -224,6 +232,10 @@ st.markdown(
         margin-bottom: 0.5rem;
     }
 
+    h6 {
+        margin-bottom: -40px !important;
+    }
+
     </style>
 
     <h1 style="text-align: center; color: #ff6f61;">
@@ -246,11 +258,25 @@ def toggle_theme():
     else:
         st.session_state.theme = "light"
 
-# Add a button to toggle the theme
-theme_button = st.button("Toggle Theme")
+# Create a variable to store the button icon
+theme_icon = "☀️" if st.session_state.theme == "light" else "🌙"
 
-if theme_button:
-    toggle_theme()
+# Create the theme toggle button
+if st.button(theme_icon, key='top-right', on_click=toggle_theme):
+    pass
+st.markdown(
+    """
+    <style>
+        .top-right-button {
+            position: absolute;
+            right: 20px;
+            top: 10px;
+        }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
 
 # Update the CSS to reflect the new theme
 if st.session_state.theme == "light":
@@ -261,10 +287,10 @@ if st.session_state.theme == "light":
             background-color: #333 !important;
         }
         .stTextInput > input {
-            color: black !important;
+            color: white !important;
         }
         .stMarkdown p {
-            color: black !important;
+            color: white !important;
         }
         </style>
         """,
@@ -276,18 +302,19 @@ else:
         <style>
         .main {
             background-color: #e9ecef !important;
+            color: #333;
         }
         .stTextInput > input {
-            color: white !important;
+            color: #333 !important;
         }
         .stMarkdown p {
-            color: white !important;
+            color: #333 !important;
         }
         [data-testid="stNotification"] {
             background-color: #e66457;
             color: #fff;
         }
-        h6 {
+        h1, h2, h3, h4, h5, h6 {
             color: #333;
         }
         </style>
@@ -379,9 +406,8 @@ st.markdown(
     """
     <style>
     .stTextInput input::placeholder {
-        color: #ff6f61 !important;
-        opacity: 0.9 !important;
-        font-size: 18px;
+        color: #ff7d71 !important;
+        font-size: 16px;
     }
     </style>
     """,
