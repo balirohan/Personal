@@ -380,8 +380,8 @@ elif uploaded_file:
         # Show success notification for file upload
         st.markdown(
             f"""
-            <div style="display: flex; align-items: center; color: #28a745; margin-bottom: 0.35rem;">
-                <i class='fas fa-check-circle' style="font-size: 1.5rem; margin-right: 0.5rem;"></i>
+            <div id="success-message" style="display: flex; align-items: center; color: #28a745; margin-bottom: 0.35rem; margin-left: 1.5rem;">
+                <i class='fas fa-check-circle' style="font-size: 1rem; margin-right: 0.5rem;"></i>
                 <span>File '{uploaded_file.name}' uploaded successfully!</span>
             </div>
             """,
