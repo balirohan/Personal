@@ -66,7 +66,7 @@ You also need an OpenAI API Key for accessing the GPT-3.5-turbo model.
 - Expanding the FAISS index with more documents for greater accuracy.
 
 ## License
-This project is licensed under the MIT License. See LICENSE for more details.
+This project is licensed under the MIT License. See [LICENSE](LICENSE) for more details.
 
 ## Acknowledgments
 - [Streamlit](https://streamlit.io/) for providing a quick way to build web applications.
