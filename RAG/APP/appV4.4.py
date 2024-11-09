@@ -1,6 +1,6 @@
 import os
 from dotenv import load_dotenv
-import streamlit as st
+import streamlit as st # type: ignore
 from langchain.chat_models import ChatOpenAI
 from langchain.prompts import PromptTemplate
 from langchain.document_loaders import PyPDFLoader
