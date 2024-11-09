@@ -195,7 +195,7 @@ st.markdown(
         flex-direction: column-reverse !important;
     }
 
-    .st-emotion-cache-15hul6a.ef3psqc12:nth-child(1) {
+    .st-emotion-cache-15hul6a.ef3psqc13:nth-child(1) {
         /* Add your custom styles here */
         padding: 14px 12px 6px 12px !important;
         position: absolute;
