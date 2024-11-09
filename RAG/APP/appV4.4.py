@@ -195,7 +195,7 @@ st.markdown(
         flex-direction: column-reverse !important;
     }
 
-    .st-emotion-cache-15hul6a.ef3psqc13:nth-child(1) {
+    .st-emotion-cache-15hul6a.ef3psqc12:nth-child(1) {
         /* Add your custom styles here */
         padding: 14px 12px 6px 12px !important;
         position: absolute;
@@ -264,18 +264,6 @@ theme_icon = "☀️" if st.session_state.theme == "light" else "🌙"
 # Create the theme toggle button
 if st.button(theme_icon, key='top-right', on_click=toggle_theme):
     pass
-st.markdown(
-    """
-    <style>
-        .top-right-button {
-            position: absolute;
-            right: 20px;
-            top: 10px;
-        }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
 
 
 # Update the CSS to reflect the new theme
@@ -347,8 +335,8 @@ uploaded_file = st.file_uploader(label=":blue[Upload a PDF file]", type=["pdf"],
 if 'file_deleted' in st.session_state and st.session_state.file_deleted:
     st.markdown(
         f"""
-        <div style="display: flex; align-items: center; color: #28a745; margin-bottom: 0.35rem;">
-            <i class='fas fa-check-circle' style="font-size: 1.5rem; margin-right: 0.5rem;"></i>
+        <div style="display: flex; align-items: center; color: #28a745; margin-bottom: 0.35rem; margin-left: 1.5rem;">
+            <i class='fas fa-check-circle' style="font-size: 1rem; margin-right: 0.5rem;"></i>
             <span>File '{st.session_state.deleted_file_name}' deleted successfully!</span>
         </div>
         """,
